@@ -48,7 +48,7 @@ export default function ProductCard({
       <div className="relative mb-4 h-56">
         <Image
           src={product.image}
-          alt={product.title}
+          alt={product.productName}
           fill
           className="object-contain"
           sizes="(max-width: 768px) 100vw, 25vw"
@@ -61,7 +61,7 @@ export default function ProductCard({
         </p>
 
         <h2 className="line-clamp-2 text-blue-400 text-lg font-semibold">
-          {product.title}
+          {product.productName}
         </h2>
 
         <div className="mt-2 flex items-center justify-between">

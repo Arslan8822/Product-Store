@@ -17,7 +17,7 @@ export async function getProducts(): Promise<Product[]> {
 export async function getProduct(
   id: string
 ): Promise<Product> {
-  const response = await fetch(`${API_URL}/products/${id}`);
+  const response = await fetch(`${API_URL}/products/${id }`);
 
   if (!response.ok) {
     throw new Error("Product not found");

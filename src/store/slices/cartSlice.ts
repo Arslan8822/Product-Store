@@ -1,94 +1,3 @@
-// import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-// import type { CartItem, Product } from "@/types/product";
-
-// interface CartState {
-//   items: CartItem[];
-// }
-
-// const initialState: CartState = {
-//   items: [],
-// };
-
-// const cartSlice = createSlice({
-//   name: "cart",
-//   initialState,
-
-//   reducers: {
-//     // Add product to cart
-//     addItem: (state, action: PayloadAction<Product>) => {
-//       const existingItem = state.items.find(
-//         (item) => item.product.id === action.payload.id
-//       );
-
-//       if (existingItem) {
-//         existingItem.quantity += 1;
-//       } else {
-//         state.items.push({
-//           product: action.payload,
-//           quantity: 1,
-//         });
-//       }
-//     },
-
-//     // Remove product completely from cart
-//     removeItem: (state, action: PayloadAction<number>) => {
-//       state.items = state.items.filter(
-//         (item) => item.product.id !== action.payload
-//       );
-//     },
-
-//     // Increase quantity
-//     increaseQuantity: (
-//       state,
-//       action: PayloadAction<number>
-//     ) => {
-//       const item = state.items.find(
-//         (item) => item.product.id === action.payload
-//       );
-
-//       if (item) {
-//         item.quantity += 1;
-//       }
-//     },
-
-//     // Decrease quantity
-//     decreaseQuantity: (
-//       state,
-//       action: PayloadAction<number>
-//     ) => {
-//       const item = state.items.find(
-//         (item) => item.product.id === action.payload
-//       );
-
-//       if (item) {
-//         if (item.quantity > 1) {
-//           item.quantity -= 1;
-//         } else {
-//           state.items = state.items.filter(
-//             (item) => item.product.id !== action.payload
-//           );
-//         }
-//       }
-//     },
-
-//     // Clear entire cart
-//     clearCart: (state) => {
-//       state.items = [];
-//     },
-//   },
-// });
-
-// export const {
-//   addItem,
-//   removeItem,
-//   increaseQuantity,
-//   decreaseQuantity,
-//   clearCart,
-// } = cartSlice.actions;
-
-// export default cartSlice.reducer;
-
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { Product } from "@/types/product";
 
@@ -101,9 +10,13 @@ interface CartState {
   items: CartItem[];
 }
 
+const MAX_ITEM_QUANTITY = 5;
+
 const initialState: CartState = {
+  // items: [{ product: { id: 2, title: "Mens Casual Premium Slim Fit T-Shirts ", price: 22.3, description: "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.", category: "men's clothing", image: "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg", rating: { rate: 4.1, count: 259 } }, quantity: 1 }],
   items: [],
 };
+
 
 const cartSlice = createSlice({
   name: "cart",
@@ -119,13 +32,15 @@ const cartSlice = createSlice({
         (item) => item.product.id === action.payload.id
       );
 
-      if (existingItem) {
+      if (existingItem && existingItem.quantity < MAX_ITEM_QUANTITY) {
         existingItem.quantity += 1;
       } else {
-        state.items.push({
-          product: action.payload,
-          quantity: 1,
-        });
+        if (!existingItem) {
+          state.items.push({
+            product: action.payload,
+            quantity: 1,
+          });
+        }
       }
     },
 
@@ -139,6 +54,7 @@ const cartSlice = createSlice({
     },
 
     addToCart: (
+      
       state,
       action: PayloadAction<CartItem>
     ) => {
@@ -148,10 +64,15 @@ const cartSlice = createSlice({
       );
 
       if (existingItem) {
-        existingItem.quantity +=
-          action.payload.quantity;
+        existingItem.quantity = Math.min(
+          existingItem.quantity + action.payload.quantity,
+          MAX_ITEM_QUANTITY
+        );
       } else {
-        state.items.push(action.payload);
+        state.items.push({
+          ...action.payload,
+          quantity: Math.min(action.payload.quantity, MAX_ITEM_QUANTITY),
+        });
       }
     },
 
@@ -174,7 +95,7 @@ const cartSlice = createSlice({
           item.product.id === action.payload
       );
 
-      if (item) {
+      if (item && item.quantity < MAX_ITEM_QUANTITY) {
         item.quantity += 1;
       }
     },
