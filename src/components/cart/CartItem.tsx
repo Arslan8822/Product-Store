@@ -29,7 +29,7 @@ export default function CartItem({
       <div className="relative h-32 w-full shrink-0 sm:w-32">
         <Image
           src={product.image}
-          alt={product.productName}
+          alt={product.title}
           fill
           className="object-contain"
           sizes="128px"
@@ -39,7 +39,7 @@ export default function CartItem({
       {/* Product Info */}
       <div className="flex-1">
         <h2 className="font-semibold text-blue-500">
-          {product.productName}
+          {product.title}
         </h2>
 
         <p className="mt-2 text-lg font-bold text-red-500">

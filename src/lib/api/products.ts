@@ -1,41 +1,49 @@
+import { ref, get } from "firebase/database";
+
+import { database } from "@/lib/firebase";
 import type { Product } from "@/types/product";
 
-const API_URL = "https://fakestoreapi.com";
-
 export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(`${API_URL}/products`);
+  const productsRef = ref(database, "products");
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch products");
+  const snapshot = await get(productsRef);
+
+  if (!snapshot.exists()) {
+    return [];
   }
 
-  const products: Product[] = await response.json();
+  const data = snapshot.val();
+
+  const products: Product[] = Object.values(data);
 
   return products;
 }
 
 export async function getProduct(
   id: string
-): Promise<Product> {
-  const response = await fetch(`${API_URL}/products/${id }`);
+): Promise<Product | null> {
+  const productRef = ref(
+    database,
+    `products/${id}`
+  );
 
-  if (!response.ok) {
-    throw new Error("Product not found");
+  const snapshot = await get(productRef);
+
+  if (!snapshot.exists()) {
+    return null;
   }
 
-  const product: Product = await response.json();
+  const product: Product = snapshot.val();
 
   return product;
 }
 
 export async function getCategories(): Promise<string[]> {
-  const response = await fetch(`${API_URL}/products/categories`);
+  const products = await getProducts();
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch categories");
-  }
+  const categories = products.map(
+    (product) => product.category
+  );
 
-  const categories: string[] = await response.json();
-
-  return categories;
+  return [...new Set(categories)];
 }

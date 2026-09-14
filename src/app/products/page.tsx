@@ -1,36 +1,23 @@
-import ProductBrowser from "@/components/products/ProductBrowser";
-import {
-  getCategories,
-  getProducts,
-} from "@/lib/api/products";
-
-export const metadata = {
-  title: "Products | Mini Product Store",
-  description: "Browse all products",
-};
+import { getProducts } from "@/lib/api/products";
 
 export default async function ProductsPage() {
-  const [products, categories] = await Promise.all([
-    getProducts(),
-    getCategories(),
-  ]);
+  const products = await getProducts();
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">
-          Products
-        </h1>
+    <div>
+      <h1>Products</h1>
 
-        <p className="mt-2 text-gray-600">
-          Browse our collection of products.
-        </p>
-      </div>
-
-      <ProductBrowser
-        products={products}
-        categories={categories}
-      />
-    </section>
+      {products.length === 0 ? (
+        <p>No products found.</p>
+      ) : (
+        <div>
+          {products.map((product) => (
+            <div key={product.id}>
+              {product.title}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

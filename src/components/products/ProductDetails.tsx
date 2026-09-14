@@ -62,7 +62,7 @@ export default function ProductDetails({
       <div className="relative h-100 rounded-lg border bg-white">
         <Image
           src={product.image}
-          alt={product.productName}
+          alt={product.title}
           fill
           className="object-contain p-8"
           sizes="(max-width: 768px) 100vw, 50vw"
@@ -76,7 +76,7 @@ export default function ProductDetails({
         </p>
 
         <h1 className="text-3xl  font-bold">
-          {product.productName}
+          {product.title}
         </h1>
 
         <div className="mt-4 flex items-center gap-4">

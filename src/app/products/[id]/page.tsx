@@ -17,9 +17,13 @@ export default async function ProductPage({
   try {
     const product = await getProduct(id);
 
+    if (!product) {
+      notFound();
+    }
+
     return (
       <section className="mx-auto max-w-7xl px-4 py-10">
-        <ProductDetails product={product} />
+        <ProductDetails product = {product} />
       </section>
     );
   } catch {

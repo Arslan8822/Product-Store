@@ -32,7 +32,7 @@ export default function FavoriteItem({
       <div className="relative h-40 w-full shrink-0 sm:w-40">
         <Image
           src={product.image}
-          alt={product.productName}
+          alt={product.title}
           fill
           className="object-contain"
           sizes="160px"
@@ -46,7 +46,7 @@ export default function FavoriteItem({
         </p>
 
         <h2 className="mt-1 text-lg font-semibold text-blue-400">
-          {product.productName}
+          {product.title}
         </h2>
 
         <p className="mt-2 text-lg font-bold text-red-400">

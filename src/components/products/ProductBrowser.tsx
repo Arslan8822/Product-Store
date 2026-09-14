@@ -27,7 +27,7 @@ export default function ProductBrowser({
     // Search
     if (search.trim()) {
       result = result.filter((product) =>
-        product.productName
+        product.title
           .toLowerCase()
           .includes(search.toLowerCase())
       );
