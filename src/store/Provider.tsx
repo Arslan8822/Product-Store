@@ -2,6 +2,8 @@
 
 import { Provider } from "react-redux";
 
+import "@/lib/firebase";
+
 import { store } from "./store";
 
 interface StoreProviderProps {

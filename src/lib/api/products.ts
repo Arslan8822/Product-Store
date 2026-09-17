@@ -1,49 +1,71 @@
-import { ref, get } from "firebase/database";
-
-import { database } from "@/lib/firebase";
 import type { Product } from "@/types/product";
 
+const API_URL = "https://dummyjson.com";
+
+interface DummyJsonProduct {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  rating: number;
+  thumbnail: string;
+  reviews?: unknown[];
+}
+
+interface DummyJsonProductsResponse {
+  products: DummyJsonProduct[];
+}
+
+function normalizeProduct(product: DummyJsonProduct): Product {
+  return {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    description: product.description,
+    category: product.category,
+    image: product.thumbnail,
+    rating: {
+      rate: product.rating,
+      count: product.reviews?.length ?? 0,
+    },
+  };
+}
+
 export async function getProducts(): Promise<Product[]> {
-  const productsRef = ref(database, "products");
+  const response = await fetch(`${API_URL}/products?limit=0`, {
+    next: { revalidate: 300 },
+  });
 
-  const snapshot = await get(productsRef);
-
-  if (!snapshot.exists()) {
-    return [];
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
   }
 
-  const data = snapshot.val();
+  const data: DummyJsonProductsResponse = await response.json();
 
-  const products: Product[] = Object.values(data);
-
-  return products;
+  return data.products.map(normalizeProduct);
 }
 
 export async function getProduct(
   id: string
-): Promise<Product | null> {
-  const productRef = ref(
-    database,
-    `products/${id}`
-  );
+): Promise<Product> {
+  const response = await fetch(`${API_URL}/products/${id}`, {
+    next: { revalidate: 300 },
+  });
 
-  const snapshot = await get(productRef);
-
-  if (!snapshot.exists()) {
-    return null;
+  if (!response.ok) {
+    throw new Error("Product not found");
   }
 
-  const product: Product = snapshot.val();
+  const product: DummyJsonProduct = await response.json();
 
-  return product;
+  return normalizeProduct(product);
 }
 
 export async function getCategories(): Promise<string[]> {
   const products = await getProducts();
 
-  const categories = products.map(
-    (product) => product.category
-  );
+  const categories = [...new Set(products.map((product) => product.category))];
 
-  return [...new Set(categories)];
+  return categories;
 }
