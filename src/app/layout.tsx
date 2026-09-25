@@ -6,8 +6,24 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 
 export const metadata: Metadata = {
-  title: " Product Store",
+  title: "Product Store",
   description: "A simple product store built with Next.js",
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
+  openGraph: {
+    title: "Product Store",
+    description: "A simple product store built with Next.js",
+    images: ["/logo.svg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Product Store",
+    description: "A simple product store built with Next.js",
+    images: ["/logo.svg"],
+  },
 };
 
 export default function RootLayout({

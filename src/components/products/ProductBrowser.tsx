@@ -72,6 +72,7 @@ export default function ProductBrowser({
           categories={categories}
           onCategoryChange={setCategory}
           onSortChange={setSort}
+          
         />
       </div>
 
