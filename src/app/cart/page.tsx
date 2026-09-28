@@ -26,7 +26,8 @@ export default function CartPage() {
           message="Add some products to your cart."
         />
       ) : (
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 ">
+        // <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className=" ">
           {/* Cart Items */}
           <div className="space-y-4 lg:col-span-2">
             {cartItems.map((item) => (
@@ -38,7 +39,7 @@ export default function CartPage() {
           </div>
 
           {/* Summary */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 mt-10">
             <CartSummary />
           </div>
         </div>

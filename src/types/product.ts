@@ -11,9 +11,14 @@ export interface Product {
   category: string;
   image: string;
   rating: Rating;
+  
 }
 
 export interface CartItem {
   product: Product;
   quantity: number;
+}
+export interface favoriteItem {
+  product: Product;
+ quantity : number ;
 }

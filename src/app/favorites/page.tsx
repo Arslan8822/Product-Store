@@ -6,6 +6,7 @@ import type { RootState } from "@/store/store";
 
 import FavoriteItem from "@/components/favorites/FavoriteItem";
 import EmptyState from "@/components/ui/EmptyState";
+import FavoriteSummary from "@/components/favorites/favoriteSummary";
 
 export default function FavoritesPage() {
   const favoriteItems = useSelector(
@@ -19,9 +20,9 @@ export default function FavoritesPage() {
           Favorites
         </h1>
 
-        <p className="mt-2 text-red-500">
+        {/* <p className="mt-2 text-red-500">
           Products you have added to your favorites.
-        </p>
+        </p> */}
       </div>
 
       {favoriteItems.length === 0 ? (
@@ -38,6 +39,9 @@ export default function FavoritesPage() {
               product={product}
             />
           ))}
+          <div className="lg:col-span-1 mt-10">
+            <FavoriteSummary/>
+          </div>
         </div>
       )}
     </section>
